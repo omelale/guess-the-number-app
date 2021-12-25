@@ -1,22 +1,28 @@
-import React from "react";
-import {Button, StyleSheet, Text, TextInput, View} from "react-native";
+import React, {useState} from "react";
+import {Button, StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard} from "react-native";
 import Card from "../components/Card";
 import colors from "../constants/colors";
+import Input from "../components/Input";
 
 const StartGameScreen = (props) => {
-
-    const onChangeText = () => {
-        console.log('');
+    const [input, setInput] = useState('');
+    const changeText = (input) => {
+        setInput(input.replace(/[^0-9]/g, ''));
     }
-
-    return (<View style={styles.page}>
+    return (<TouchableWithoutFeedback onPress={() => {
+        Keyboard.dismiss();
+    }}><View style={styles.page}>
         <Text style={styles.specialTitle}>Start a new game</Text>
         <Card style={styles.mainContainer}>
             <Text style={styles.cardTitle}>Insert a number</Text>
-            <TextInput
+            <Input
+                keyboardType='number-pad'
+                autoCorrect={false}
+                maxLength={2}
+                blurOnSubmit
                 style={styles.input}
-                onChangeText={onChangeText}
-                value='0'
+                onChangeText={changeText}
+                value={input}
             />
             <View style={styles.bothButtons}>
                 <View style={styles.button}><Button title="Reset" onPress={() => {
@@ -25,14 +31,14 @@ const StartGameScreen = (props) => {
                 }} color={colors.primary}/></View>
             </View>
         </Card>
-    </View>)
+    </View></TouchableWithoutFeedback>)
 }
 
 const styles = StyleSheet.create({
     page: {
         flex: 1, padding: 10, alignItems: 'center', justifyContent: 'flex-start'
     }, input: {
-        height: 50, margin: 10, borderWidth: 2, padding: 10, fontSize: 18,
+        height: 50, margin: 10, borderWidth: 2, padding: 10, fontSize: 18, textAlign: 'center'
     }, bothButtons: {
         display: "flex",
         flexDirection: 'row',
