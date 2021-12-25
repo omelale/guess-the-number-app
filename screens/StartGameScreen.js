@@ -11,6 +11,13 @@ const StartGameScreen = (props) => {
     const changeText = (input) => {
         setInput(input.replace(/[^0-9]/g, ''));
     }
+    let displayText;
+    if (confirmed) {
+        displayText =
+            <View style={styles.confirmText}><Text>The number you have entered
+                is: <Text style={styles.bold}>{chosenNumber}</Text></Text><Button
+                title='START GAME' style={styles.button}/></View>
+    }
     const handleReset = () => {
         setInput('');
         Keyboard.dismiss();
@@ -20,8 +27,8 @@ const StartGameScreen = (props) => {
         const chosenNr = parseInt(input);
         if (isNaN(chosenNr) || chosenNr <= 0 || chosenNr >= 99) {
             setInput('');
-            Alert.alert("Scelta sbagliata", "Scegli un numero maggiore di 0 e minore di 100", [{
-                text: "Chiudi", onPress: () => {
+            Alert.alert("Wrong choice!", "Pick a number between 0 and 100", [{
+                text: "Close", onPress: () => {
                 }, style: "destructive"
             }]);
             return
@@ -30,9 +37,6 @@ const StartGameScreen = (props) => {
         Keyboard.dismiss();
         setChosenNumber(input);
         setInput('');
-        Alert.alert("Numero scelto", "Hai inserito: " + chosenNumber, [{
-            text: "Chiudi", onPress: () => console.log(chosenNumber), style: "cancel"
-        }]);
     }
     return (<TouchableWithoutFeedback onPress={() => {
         Keyboard.dismiss();
@@ -55,6 +59,7 @@ const StartGameScreen = (props) => {
                 <View style={styles.button}><Button title="Confirm" onPress={handleConfirm}
                                                     color={colors.primary}/></View>
             </View>
+            {displayText}
         </Card>
     </View></TouchableWithoutFeedback>)
 }
@@ -79,6 +84,12 @@ const styles = StyleSheet.create({
         fontSize: 18
     }, button: {
         width: 90,
+    }, confirmText: {
+        flexDirection: 'column',
+        justifyContent: 'center'
+    }, bold: {
+        fontWeight: "bold",
+        fontSize: 20,
     }
 })
 
