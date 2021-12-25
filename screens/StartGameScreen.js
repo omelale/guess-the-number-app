@@ -1,13 +1,38 @@
 import React, {useState} from "react";
-import {Button, StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard} from "react-native";
+import {Alert, Button, Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import Card from "../components/Card";
 import colors from "../constants/colors";
 import Input from "../components/Input";
 
 const StartGameScreen = (props) => {
     const [input, setInput] = useState('');
+    const [confirmed, setConfirmed] = useState(false);
+    const [chosenNumber, setChosenNumber] = useState('');
     const changeText = (input) => {
         setInput(input.replace(/[^0-9]/g, ''));
+    }
+    const handleReset = () => {
+        setInput('');
+        Keyboard.dismiss();
+        setConfirmed(false);
+    }
+    const handleConfirm = () => {
+        const chosenNr = parseInt(input);
+        if (isNaN(chosenNr) || chosenNr <= 0 || chosenNr >= 99) {
+            setInput('');
+            Alert.alert("Scelta sbagliata", "Scegli un numero maggiore di 0 e minore di 100", [{
+                text: "Chiudi", onPress: () => {
+                }, style: "destructive"
+            }]);
+            return
+        }
+        setConfirmed(true);
+        Keyboard.dismiss();
+        setChosenNumber(input);
+        setInput('');
+        Alert.alert("Numero scelto", "Hai inserito: " + chosenNumber, [{
+            text: "Chiudi", onPress: () => console.log(chosenNumber), style: "cancel"
+        }]);
     }
     return (<TouchableWithoutFeedback onPress={() => {
         Keyboard.dismiss();
@@ -25,10 +50,10 @@ const StartGameScreen = (props) => {
                 value={input}
             />
             <View style={styles.bothButtons}>
-                <View style={styles.button}><Button title="Reset" onPress={() => {
-                }} color={colors.secondary}/></View>
-                <View style={styles.button}><Button title="Confirm" onPress={() => {
-                }} color={colors.primary}/></View>
+                <View style={styles.button}><Button title="Reset" onPress={handleReset}
+                                                    color={colors.secondary}/></View>
+                <View style={styles.button}><Button title="Confirm" onPress={handleConfirm}
+                                                    color={colors.primary}/></View>
             </View>
         </Card>
     </View></TouchableWithoutFeedback>)
