@@ -11,12 +11,15 @@ const StartGameScreen = (props) => {
     const changeText = (input) => {
         setInput(input.replace(/[^0-9]/g, ''));
     }
+    const handleStart = () => {
+        props.onStartGame(chosenNumber)
+    }
     let displayText;
     if (confirmed) {
         displayText =
             <View style={styles.confirmText}><Text>The number you have entered
                 is: <Text style={styles.bold}>{chosenNumber}</Text></Text><Button
-                title='START GAME' style={styles.button}/></View>
+                title='START GAME' onPress={handleStart} style={styles.button} color={colors.titles}/></View>
     }
     const handleReset = () => {
         setInput('');
