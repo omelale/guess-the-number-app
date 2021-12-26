@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Alert, Button, StyleSheet, Text, View} from "react-native";
 import Card from "../components/Card";
 import colors from "../constants/colors";
@@ -15,9 +15,17 @@ const generateGuessBetween = (min, max, exclude) => {
 
 const GameScreen = (props) => {
     const [guess, setGuess] = useState(generateGuessBetween(1, 100, props.userChoice));
+    const [numGuesses, setNumGuesses] = useState(0)
     const minimum = useRef(1);
     const maximum = useRef(100);
 
+    const {userChoice, onGameOver} = props;
+
+    useEffect(() => {
+        if (guess === userChoice) {
+            onGameOver(numGuesses);
+        }
+    }, [guess, userChoice, onGameOver]);
     const handleHigher = () => {
         if (guess > props.userChoice) {
             Alert.alert("Aaah You are cheating!", "Do not cheat", [{
@@ -28,6 +36,7 @@ const GameScreen = (props) => {
             minimum.current = guess;
             const newNumber = generateGuessBetween(minimum.current, maximum.current, guess);
             setGuess(newNumber);
+            setNumGuesses(currRounds => currRounds + 1);
         }
     }
 
@@ -41,6 +50,7 @@ const GameScreen = (props) => {
             maximum.current = guess;
             const newNumber = generateGuessBetween(minimum.current, maximum.current, guess);
             setGuess(newNumber);
+            setNumGuesses(currRounds => currRounds + 1);
         }
     }
 
