@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         width: '100%'
     }, specialTitle: {
-        fontSize: 20, marginVertical: 10
+        fontSize: 20, marginVertical: 10, fontFamily: 'open-sans-bold',
     }, mainContainer: {
         width: 300, maxWidth: '80%', alignItems: 'center',
     }, cardTitle: {
